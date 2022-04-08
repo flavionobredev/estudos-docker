@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  core-api:
+    extends: 
+      file: core-api.yml
+      service: core-api

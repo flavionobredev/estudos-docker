@@ -1,0 +1,7 @@
+version: "3.7"
+
+services:
+  core-api:
+    image: ${CORE_API_IMAGE}
+    ports:
+      - 3001:3001
