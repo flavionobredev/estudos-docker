@@ -1,0 +1,36 @@
+version: "3.7"
+
+networks:
+  prod:
+    driver: overlay
+
+services:
+  core-api:
+    image: ${CORE_API_IMAGE}
+    ports:
+      - 3001:3001
+    networks:
+      - prod
+    labels:
+      org.swarm.service: "core-api"
+    healthcheck:
+      test: curl -f http://localhost:3001 || exit 1
+      interval: 30s
+      retries: 6
+      start_period: 10s
+      timeout: 10s
+    deploy:
+      replicas: 4
+      update_config:
+        order: start-first
+        failure_action: rollback
+        parallelism: 2
+        delay: 5s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
